@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vinyl Music Player</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: transparent;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .music-widget {
+      width: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      padding: 20px;
+    }
+
+    .record-container {
+      position: relative;
+      width: 210px;
+      height: 210px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .record-container:hover {
+      transform: scale(1.04);
+    }
+
+    .record-shadow {
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      left: 12px;
+      top: 15px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.16);
+      filter: blur(12px);
+      z-index: -1;
+    }
+
+    .record-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .record-center {
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: #e8e2d8;
+      border: 5px solid #222;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .record-center span {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #222;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .record-container.playing .record-image {
+      animation: recordSpin 4s linear infinite;
+    }
+
+    @keyframes recordSpin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .music-info {
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .track-name {
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      color: #222;
+      text-transform: uppercase;
+    }
+
+    .track-status {
+      margin-top: 5px;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: #888;
+    }
+
+    .play-button {
+      width: 38px;
+      height: 38px;
+      border: 1px solid #222;
+      border-radius: 50%;
+      background: transparent;
+      color: #222;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+      transition: all 0.25s ease;
+    }
+
+    .play-button:hover {
+      background: #222;
+      color: white;
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="music-widget">
+
+    <div class="record-container" id="recordToggle">
+      <div class="record-shadow"></div>
+
+      <img
+        class="record-image"
+        src="https://i.postimg.cc/NF3Twxyf/9d-Ddj-R2VFuzn-YOTCOR7TIng-Mv-ECBRQgdt-O-y-H9nhceg-Nte144w-D6fp-As-Eig-U8R5Ax-W42PWa-BYo4Ehj-Htth7Ke.jpg"
+        alt="Vinyl Record"
+      />
+
+      <div class="record-center">
+        <span></span>
+      </div>
+    </div>
+
+    <div class="music-info">
+      <div class="track-name">BEAUTY AND A BEAT</div>
+      <div class="track-status" id="trackStatus">PAUSED</div>
+    </div>
+
+    <button class="play-button" id="playButton" aria-label="Play or pause music">
+      <span id="playIcon">▶</span>
+    </button>
+
+    <audio
+      id="audioPlayer"
+      src="https://www.dropbox.com/scl/fi/u511cd5hb9x1fryqhsb4l/Justin-Bieber-Beauty-And-A-Beat-Official-Music-Video-ft.-Nicki-Minaj.mp3?rlkey=7au8vscglmjmxe6h21hq0apa3&st=w4894zya&raw=1"
+    ></audio>
+
+  </div>
+
+  <script>
+    const record = document.getElementById("recordToggle");
+    const playButton = document.getElementById("playButton");
+    const playIcon = document.getElementById("playIcon");
+    const audio = document.getElementById("audioPlayer");
+    const status = document.getElementById("trackStatus");
+
+    function updatePlayerUI(isPlaying) {
+      if (isPlaying) {
+        record.classList.add("playing");
+        playIcon.textContent = "Ⅱ";
+        status.textContent = "PLAYING";
+      } else {
+        record.classList.remove("playing");
+        playIcon.textContent = "▶";
+        status.textContent = "PAUSED";
+      }
+    }
+
+    function toggleMusic() {
+      if (audio.paused) {
+        audio.play()
+          .then(() => {
+            updatePlayerUI(true);
+          })
+          .catch((error) => {
+            console.log("Audio cannot play:", error);
+            status.textContent = "CANNOT PLAY";
+          });
+      } else {
+        audio.pause();
+        updatePlayerUI(false);
+      }
+    }
+
+    record.addEventListener("click", toggleMusic);
+    playButton.addEventListener("click", toggleMusic);
+
+    audio.addEventListener("ended", () => {
+      updatePlayerUI(false);
+    });
+  </script>
+
+</body>
+</html>
