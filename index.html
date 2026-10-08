@@ -60,30 +60,6 @@
       display: block;
     }
 
-    .record-center {
-      position: absolute;
-      width: 25px;
-      height: 25px;
-      border-radius: 50%;
-      background: #e8e2d8;
-      border: 5px solid #222;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-    }
-
-    .record-center span {
-      position: absolute;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: #222;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
     /* Đĩa xoay khi đang phát */
     .record-container.playing .record-image {
       animation: recordSpin 4s linear infinite;
@@ -109,7 +85,6 @@
 
   <div class="music-widget">
 
-    <!-- VINYL -->
     <div class="record-container" id="recordToggle">
 
       <div class="record-shadow"></div>
@@ -118,16 +93,10 @@
         class="record-image"
         src="https://i.postimg.cc/L8V5qqTy/Bandicoot-Design-Vinyl-PVC-Sleeve-Mockup.png"
         alt="Vinyl Record"
-      />
-
-      <!-- Tâm đĩa -->
-      <div class="record-center">
-        <span></span>
-      </div>
+      >
 
     </div>
 
-    <!-- AUDIO -->
     <audio
       id="audioPlayer"
       src="https://www.dropbox.com/scl/fi/x5vcvnlf2woolz8eh8p28/Justin-Bieber-Nicki-Minaj-Beauty-And-A-Beat-Lyrics-J9abt3xpdDU.mp3?rlkey=1w58d2i5r933tzwr5zvyszoio&st=p1a322p4&raw=1">
@@ -159,14 +128,11 @@
       }
     }
 
-    // Click vào đĩa để play / pause
     record.addEventListener("click", toggleMusic);
 
-    // Khi bài hát kết thúc
     audio.addEventListener("ended", () => {
       record.classList.remove("playing");
     });
-
   </script>
 
 </body>
